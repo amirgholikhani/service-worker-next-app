@@ -20,6 +20,9 @@
 # production
 /build
 
+# IDE folder (jetBrains)
+/.idea
+
 # misc
 .DS_Store
 *.pem
