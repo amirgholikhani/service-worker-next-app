@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Service Worker Next.js App
 
-## Getting Started
+A Next.js application with a comprehensive service worker implementation using Workbox for offline functionality, background sync, and PWA features.
 
-First, run the development server:
+## Features
+
+- **Offline Support**: App works offline with cached resources
+- **Background Sync**: Queues POST requests when offline
+- **Smart Caching**: Different caching strategies for different resource types
+- **PWA Ready**: Installable as a Progressive Web App
+- **Real-time Status**: Visual indicators for online/offline status and service worker state
+
+## Service Worker Capabilities
+
+### Caching Strategies
+
+- **API Routes**: StaleWhileRevalidate for `/api/users` and `/api/products`
+- **Images**: CacheFirst with 30-day expiration
+- **Static Assets**: StaleWhileRevalidate for CSS, JS, and fonts
+- **Navigation**: NetworkFirst for HTML pages
+- **Background Sync**: For POST requests to external APIs
+
+### Offline Fallback
+
+- Custom offline page with retry functionality
+- Automatic reconnection detection
+- Graceful degradation when offline
+
+## Development
 
 ```bash
+# Install dependencies
+npm install
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Build Process
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The build process automatically:
+1. Builds the Next.js application
+2. Generates the service worker with Workbox
+3. Injects the precache manifest
+4. Optimizes caching strategies
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Service Worker Registration
 
-## Learn More
+The service worker is automatically registered when the app loads and provides:
+- Real-time online/offline status
+- Service worker state monitoring
+- Update notifications
+- Background sync capabilities
 
-To learn more about Next.js, take a look at the following resources:
+## PWA Features
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Web app manifest for installation
+- Theme color integration
+- Offline-first architecture
+- Background sync for data persistence
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Configuration
 
-## Deploy on Vercel
+### Workbox Config (`workbox-config.js`)
+- Precache patterns for static assets
+- Service worker source and destination
+- File size limits and optimization settings
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Service Worker Source (`src/sw-src.js`)
+- Caching strategies
+- Background sync configuration
+- Offline fallback handling
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Browser Support
+
+- Modern browsers with Service Worker support
+- Progressive enhancement for older browsers
+- Graceful fallback when service worker is unavailable
+
+## Troubleshooting
+
+- Check browser console for service worker registration status
+- Verify offline.html is accessible
+- Ensure HTTPS in production (required for service workers)
+- Check browser developer tools > Application > Service Workers
+
+## License
+
+MIT

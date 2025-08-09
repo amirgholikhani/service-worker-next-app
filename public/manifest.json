@@ -1,0 +1,16 @@
+{
+  "name": "Service Worker Next.js App",
+  "short_name": "SW App",
+  "description": "A Next.js app with service worker for offline functionality",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#667eea",
+  "icons": [
+    {
+      "src": "/next.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+} 
