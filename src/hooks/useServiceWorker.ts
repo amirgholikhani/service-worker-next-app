@@ -19,16 +19,11 @@ export function useServiceWorker() {
 
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
-        // Use different service workers for development vs production
-        const isDev = process.env.NODE_ENV === 'development';
-        const swPath = isDev ? '/sw-dev.js' : '/service-worker.js';
-        
-        console.log(`Registering ${isDev ? 'development' : 'production'} service worker:`, swPath);
-        
+        // Try to register the main service worker first, fallback to dev if it fails
         navigator.serviceWorker
-          .register(swPath)
+          .register("/service-worker.js")
           .then((reg) => {
-            console.log(`${isDev ? 'Development' : 'Production'} Service Worker registered successfully:`, reg);
+            console.log("Main Service Worker registered successfully:", reg);
             setSwStatus('Registered');
             
             // Check for updates
@@ -52,18 +47,26 @@ export function useServiceWorker() {
               setSwStatus('Active');
             }
 
-            // Only register custom SW in production
-            if (!isDev) {
-              return navigator.serviceWorker.register("/sw-custom.js");
-            }
+            // Register custom service worker
+            return navigator.serviceWorker.register("/sw-custom.js");
           })
           .then((customReg) => {
-            if (customReg) {
-              console.log("Custom Service Worker registered successfully:", customReg);
+            console.log("Custom Service Worker registered successfully:", customReg);
+          })
+          .catch((err) => {
+            console.log("Main service worker not available, trying development worker:", err);
+            
+            // Fallback to development service worker
+            return navigator.serviceWorker.register("/sw-dev.js");
+          })
+          .then((devReg) => {
+            if (devReg) {
+              console.log("Development Service Worker registered successfully:", devReg);
+              setSwStatus('Dev Mode');
             }
           })
           .catch((err) => {
-            console.error("Service Worker registration failed:", err);
+            console.error("All service worker registrations failed:", err);
             setSwStatus('Failed');
           });
       });
